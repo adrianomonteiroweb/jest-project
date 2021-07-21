@@ -1,5 +1,6 @@
-const fetch = require('node-fetch');
-const api = require('../src/mockApi');
+const mockApi = require('../src/mockApi');
+
+const { fetchURL } = mockApi;
 
 /*
 A função fetchURL retorna um JSON com informações de um usuário aleatório buscadas da API 'randomuser.me'.
@@ -22,31 +23,26 @@ Dica: Utilizem os métodos jest.fn() ou jest.spyOn().
 
 ATENÇÃO!!! Edite apenas este arquivo. Não altere os arquivos da pasta 'src'.
 */
+const object = {
+  gender: 'Masculino',
+  name: { first: 'Antônio', last: 'Britto' },
+  location: { country: 'Brasil' },
+  email: 'tunico@bol.com.br',
+  login: { username: 'tunicao123', password: '1234567890' },
+};
 
-jest.mock('node-fetch');
+jest.mock('../src/mockApi');
+fetchURL.mockImplementation(() => Promise.resolve(object));
 
 describe('verifica o usuário', () => {
-  test('verifica se o usuário é o tunico', async () => (
-    
-    fetch.mockImplementation(() => Promise.resolve({
-      json: () => Promise.resolve(
-        {
-          gender: 'Masculino',
-          name: { first: 'Antônio', last: 'Britto' },
-          location: { country: 'Brasil' },
-          email: 'tunico@bol.com.br',
-          login: { username: 'tunicao123', password: '1234567890' },
-        }
-      )
-    }))
-    api.fetchURL().then((user) => {
-      expect(user.gender).toEqual('Masculino');
-      expect(user.name.first).toEqual('Antônio');
-      expect(user.name.last).toEqual('Britto');
-      expect(user.location.country).toEqual('Brasil');
-      expect(user.email).toEqual('tunico@bol.com.br');
-      expect(user.login.username).toEqual('tunicao123');
-      expect(user.login.password).toEqual('1234567890');
-    });
-  ));
+  test('verifica se o usuário é o tunico', async () => {
+    const result = await fetchURL(1);
+    expect(result.gender).toEqual('Masculino');
+    expect(result.name.first).toEqual('Antônio');
+    expect(result.name.last).toEqual('Britto');
+    expect(result.location.country).toEqual('Brasil');
+    expect(result.email).toEqual('tunico@bol.com.br');
+    expect(result.login.username).toEqual('tunicao123');
+    expect(result.login.password).toEqual('1234567890');
+  });
 });
