@@ -33,7 +33,9 @@ describe('quem sobreviveu?', () => {
   const nameSpecialists = () => specialists.map((spececialist) => spececialist.nome);
 
   beforeEach(() => randomAttack());
+
   afterEach(() => console.log(`${(nameSpecialists()).join(', ')} ainda estão na batalha!`));
+
   afterAll(() => console.log(`${specialists[0].nome} foi o único sobrevidente!`));
 
   test('depois da primeira aventura', () => {
